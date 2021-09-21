@@ -1,9 +1,10 @@
 const express = require('express');
+const cors = require('cors');
 class Server{
     constructor(){
         this.app = express();
         this.port = process.env.PORT;
-
+        this.usersRoutePath = '/api/users';
         // Middlewares
         this.middlewares();
 
@@ -13,46 +14,15 @@ class Server{
         this.routes();
     }
     middlewares(){
+        // CORS
+        this.app.use( cors() );
+
         // Public directory
         this.app.use( express.static('public'));
     }
 
     routes(){
-        this.app.get('/api', (req, res)=>{
-            //res.send('Hello World');
-            res.json({
-            //res.status(403).json({
-                ok: true,
-                msg: 'get API'
-            });
-        });
-        this.app.put('/api', (req, res)=>{
-            //res.send('Hello World');
-            res.json({
-            //res.status(403).json({
-                ok: true,
-                msg: 'put API',
-                data: [0, 1.2, 3.589]
-            });
-        });
-        this.app.post('/api', (req, res)=>{
-            //res.send('Hello World');
-            res.json({
-            //res.status(403).json({
-                ok: true,
-                msg: 'post API',
-                data: [0, 1.2, 3.589]
-            });
-        });
-        this.app.delete('/api', (req, res)=>{
-            //res.send('Hello World');
-            res.json({
-            //res.status(403).json({
-                ok: true,
-                msg: 'delete API',
-                data: [0, 1.2, 3.589]
-            });
-        });
+       this.app.use(this.usersRoutePath, require('../routes/user'))
     }
 
     listen(){
