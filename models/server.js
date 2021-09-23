@@ -9,8 +9,6 @@ class Server{
         this.middlewares();
 
         // App's Routes
-
-
         this.routes();
     }
     middlewares(){
@@ -18,7 +16,7 @@ class Server{
         this.app.use( cors() );
         
         // Reading and Parcing of body
-        this.app.use( express.json() );
+        this.app.use( express.json() ); 
 
         // Public directory
         this.app.use( express.static('public'));
