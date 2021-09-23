@@ -16,6 +16,9 @@ class Server{
     middlewares(){
         // CORS
         this.app.use( cors() );
+        
+        // Reading and Parcing of body
+        this.app.use( express.json() );
 
         // Public directory
         this.app.use( express.static('public'));
