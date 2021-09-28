@@ -1,8 +1,9 @@
 // Here have the controllers
 
 const { response, request } = require('express');
+const bcryptjs = require('bcryptjs');
 const Usuario = require('../models/user');
-
+const user = require('../models/user');
 
 const userGet = (req = request, res = response)=>{
     const {q, nombre='No name', key} = req.query;
@@ -26,16 +27,19 @@ const userPut = (req, res = response)=>{
 }
 
 const userPost = async (req, res = response)=>{
-    //const {nombre, apellido} = req.body;
-    const body = req.body;
-    const usuario = new Usuario( body );
+    const {name, email, password, role} = req.body; // Destructuration
+    const usuario = new Usuario( {name, email, password, role} ); 
 
-    await usuario.save();
+    // Check if the email exist
+
+    // Encrypt password
+    const salt = bcryptjs.genSaltSync(); // ten for defect
+    usuario.password = bcryptjs.hashSync( password, salt);
+    // Save in database
+    await usuario.save(); // Save in the DB
     res.status(201).json({
         ok: true,
-        //msg: 'post API -  controller',
-        data: [0, 1.2, 3.589],
-        usuario
+        usuario                 // return a database
     });
 }
 
